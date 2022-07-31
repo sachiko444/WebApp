@@ -1,0 +1,42 @@
+header {
+  background: rgba(248, 247, 245, 0.986);
+}
+
+body {
+  background-image: url("cereal.jpg");
+}
+
+aside {
+  float: left;
+  margin: 0 1%;
+  width: 18%;
+  height: 50%;
+  border-style: solid;
+  text-align: center;
+  border-color: saddlebrown;
+  block-size: 484px;
+  background: rgba(248, 246, 240, 0.952);
+}
+
+section {
+  float: right;
+  margin: 0 3%;
+  width: 70%;
+  height: 50%;
+  border-style: solid;
+  border-color: saddlebrown;
+  font-size: 20px;
+  block-size: 450px;
+}
+
+.this {
+  background: rgba(248, 246, 240, 0.863);
+}
+
+footer {
+  clear: both;
+  position: relative;
+  height: 50x;
+  margin-top: -50px;
+  text-align: center;
+}
