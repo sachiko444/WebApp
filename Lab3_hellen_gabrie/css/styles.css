@@ -1,0 +1,64 @@
+main {
+  height: auto;
+}
+
+header {
+  background: rgba(248, 247, 245, 0.986);
+  width: 100%;
+}
+
+#titulo {
+  width: 20%;
+  font-family: "Calibri";
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#navegador nav a {
+  text-decoration: none;
+  width: 80%;
+  margin-left: 20px;
+}
+
+#more a {
+  text-decoration: none;
+}
+
+body {
+  background-image: url("../images/cereal.jpg");
+}
+
+aside {
+  float: left;
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+  text-align: center;
+  border-color: saddlebrown;
+
+  background: rgba(248, 246, 240, 0.952);
+}
+
+section {
+  float: right;
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+  border-color: saddlebrown;
+}
+
+.this {
+  background: rgba(248, 246, 240, 0.863);
+}
+
+footer {
+  clear: both;
+  position: relative;
+  height: 100px;
+
+  text-align: center;
+}
+
+#socials a {
+  text-decoration: none;
+}
