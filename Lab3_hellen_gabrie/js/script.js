@@ -21,7 +21,7 @@ function mensaje() {
         apellido.value +
         " usted no puede recibir información porque no cumple con la mayoría de edad",
       icon: "warning",
-      button: "Cool",
+      button: "Boo ya",
     });
   } else {
     swal({
@@ -35,7 +35,8 @@ function mensaje() {
         correo.value,
       icon: "success",
       button: "Cool",
+    }).then(function () {
+      window.location = "../index.html";
     });
-    window.location.href = "../index.html";
   }
 }
