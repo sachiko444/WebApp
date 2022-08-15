@@ -1,5 +1,3 @@
-document.write("hello there");
-
 function mensaje() {
   var nombre = document.getElementById("nombre");
   var apellido = document.getElementById("Apellido");
@@ -7,17 +5,6 @@ function mensaje() {
   var edad = document.getElementById("Edad");
 
   if (edad.value < 18) {
-    Swal.fire({
-      title: "Error!",
-      text:
-        "Hola, " +
-        nombre.value +
-        "  " +
-        apellido.value +
-        " usted no puede recibir información porque no cumple con la mayoría de edad",
-      icon: "error",
-      confirmButtonText: "Cool",
-    });
     document.getElementById("nombre").disabled = true;
     document.getElementById("Apellido").disabled = true;
     document.getElementById("Genero").disabled = true;
@@ -25,8 +12,19 @@ function mensaje() {
     document.getElementById("Correo").disabled = true;
     document.getElementById("telefono").disabled = true;
     document.getElementById("Mensaje").disabled = true;
+    swal({
+      title: "Error!",
+      text:
+        "Hola, " +
+        nombre.value +
+        "  " +
+        apellido.value +
+        " usted no puede recibir información porque no cumple con la mayoría de edad",
+      icon: "warning",
+      button: "Cool",
+    });
   } else {
-    Swal.fire({
+    swal({
       title: "Oh yea!",
       text:
         "Bienvenido, " +
@@ -35,9 +33,9 @@ function mensaje() {
         apellido.value +
         " en breve le enviaremos un correo electrónico con información a " +
         correo.value,
-
-      icon: "error",
-      confirmButtonText: "Cool",
+      icon: "success",
+      button: "Cool",
     });
+    window.location.href = "../index.html";
   }
 }
