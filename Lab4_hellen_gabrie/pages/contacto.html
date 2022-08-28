@@ -156,10 +156,10 @@
 
 
 
-                    <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-                      <template v-slot:item.calories="{ item }">
-                        <v-chip :color="getColor(item.calories)" dark>
-                          {{ item.calories }}
+                    <v-data-table :headers="headers" :items="info" class="elevation-1">
+                      <template v-slot:item.edad="{ item }">
+                        <v-chip :color="getColor(item.edad)" dark>
+                          {{ item.edad }}
                         </v-chip>
                       </template>
                     </v-data-table>

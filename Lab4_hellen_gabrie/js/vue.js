@@ -54,29 +54,8 @@ new Vue({
       { text: "Email", value: "email" },
       { text: "Teléfono", value: "telefono" },
     ],
-    info: [],    
-    
-
+    info: [],
   }),
-
-   watch: {
-      datavalid() {
-        if(this.valid) {
-            this.info= [
-            {
-              name: this.contacto.name,
-              apellido: this.contacto.apellido,
-              genero: this.contacto.genero,
-              edad: this.contacto.edad,
-              email: this.contacto.email,
-              telefono: this.contacto.telefono,
-            },
-          ],
-          } else {
-            this.info= [],
-          },
-    },
-    },
 
   methods: {
     guardar() {
@@ -98,6 +77,14 @@ new Vue({
           this.contacto.apellido +
           " en breve le enviaremos un correo electrónico con información a " +
           this.contacto.email;
+        this.info.push({
+          name: this.contacto.name,
+          apellido: this.contacto.apellido,
+          genero: this.contacto.genero,
+          edad: this.contacto.edad,
+          email: this.contacto.email,
+          telefono: this.contacto.telefono,
+        });
         this.$refs.form.validate();
       }
     },
