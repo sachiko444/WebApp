@@ -376,7 +376,7 @@ Vue.component("lista", {
     },
     ...Vuex.mapState(["cantidad"]),
     agregar(name, image, count) {
-      this.items.cantidad++;
+      this.items.cantidad = 1;
       agregarCarrito(name, image, count);
     },
   },
