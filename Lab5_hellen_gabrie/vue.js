@@ -164,7 +164,7 @@ Vue.component("carrito", {
                 
                 <v-card-actions class="justify-center">
 
-           <lista :items.cantidad="items.cantidad"> </lista>            <!--Comunicacion entre carrito y lista-->
+           <lista :item.cantidad="item.cantidad"> </lista>            <!--Comunicacion entre carrito y lista-->
 
                     <v-btn
                       class="mx-2"
@@ -375,9 +375,9 @@ Vue.component("lista", {
       return this.keys.filter((key) => key !== "Name");
     },
     ...Vuex.mapState(["cantidad"]),
-    agregar() {
-      this.item.cantidad++;
-      agregarCarrito(this.item.nombre, this.item.imagen, this.item.cantidad);
+    agregar(name, image, count) {
+      this.items.cantidad++;
+      agregarCarrito(name, image, count);
     },
   },
   methods: {
@@ -447,7 +447,7 @@ Vue.component("lista", {
                                                             </v-list-item-content>
 
                                                         </v-list-item>
-                                                        <v-btn class="mx-2" fab dark small color="primary" @click="item.cantidad + 1">
+                                                        <v-btn class="mx-2" fab dark small color="primary" @click="agregar(item.nombre, item.imagen, item.cantidad)">
       <!--AQUI BOTON-->                                     
                                                             <v-icon dark>
                                                                 mdi-cart
