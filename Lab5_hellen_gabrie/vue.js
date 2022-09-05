@@ -1,13 +1,14 @@
 const store = new Vuex.Store({
   state: {
-    cantidad: 0,
+    carrito: [],
   },
   mutations: {
-    aumentar() {
-      this.state.cantidad++;
-    },
-    disminuir() {
-      this.state.cantidad--;
+    agregarCarrito(item) {
+      for (var i = 1; i <= this.carrito.length; i++) {
+        if (this.carrito[i] == item) {
+          this.carrito.splice(i, 1, item);
+        }
+      }
     },
   },
 });
@@ -22,30 +23,32 @@ Vue.component("carrito", {
       page: 1,
       itemsPerPage: 4,
       sortBy: "name",
-      keys: ["Nombre", "Imagen", "Cantidad"],
+      keys: ["Nombre", "Imagen", "Descripcion", "Cantidad"],
       items: [],
     };
   },
 
   computed: {
-    ...Vuex.mapState(["cantidad"]),
+    ...Vuex.mapState(["carrito"]),
     numberOfPages() {
       return Math.ceil(this.items.length / this.itemsPerPage);
     },
     filteredKeys() {
       return this.keys.filter((key) => key !== "Name");
     },
-    agregarCarrito(name, image, count) {
-      this.items.push({
-        nombre: name,
-        imagen: image,
-        cantidad: count,
-      });
+    addtoItems() {
+      this.items = this.$store.state.carrito;
+    },
+    aumentar(item) {
+      item.cantidad++;
+    },
+    disminuir(item) {
+      item.cantidad--;
     },
   },
 
   methods: {
-    ...Vuex.mapMutations(["aumentar", "disminuir"]),
+    ...Vuex.mapMutations(["agregarCarrito"]),
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1;
     },
@@ -92,7 +95,7 @@ Vue.component("carrito", {
                 flat
                 solo-inverted
                 hide-details
-                :items="keys[2]"
+                :items="keys"
                 prepend-inner-icon="mdi-magnify"
                 label="Sort by"
               ></v-select>
@@ -153,7 +156,9 @@ Vue.component("carrito", {
                       class="center"
                       :class="{ 'blue--text': sortBy === key }"
                     >
-                      {{ item.descripcion }}
+
+                      {{addtoItems()}}
+                      {{ item }}
                       
                       
                       
@@ -164,7 +169,7 @@ Vue.component("carrito", {
                 
                 <v-card-actions class="justify-center">
 
-           <lista :item.cantidad="item.cantidad"> </lista>            <!--Comunicacion entre carrito y lista-->
+                       <!--Comunicacion entre carrito y lista-->
 
                     <v-btn
                       class="mx-2"
@@ -172,7 +177,7 @@ Vue.component("carrito", {
                       dark
                       small
                       color="primary"
-                      @click="cantidad--"                       <!--AQUI BOTON-->
+                      @click="disminuir(item)"                       <!--AQUI BOTON-->
                       
                     >
                       <v-icon dark>
@@ -186,7 +191,7 @@ Vue.component("carrito", {
                       dark
                       small
                       color="primary"
-                      @click="cantidad++"                       <!--AQUI BOTON-->
+                      @click="aumentar(item)"                       <!--AQUI BOTON-->
                       
                     >
                       <v-icon dark>
@@ -374,13 +379,14 @@ Vue.component("lista", {
     filteredKeys() {
       return this.keys.filter((key) => key !== "Name");
     },
-    ...Vuex.mapState(["cantidad"]),
-    agregar(name, image, count) {
-      this.items.cantidad = 1;
-      agregarCarrito(name, image, count);
+    ...Vuex.mapState(["carrito"]),
+    agregar(item) {
+      item.cantidad = 1;
+      this.$store.commit("agregarCarrito", item);
     },
   },
   methods: {
+    ...Vuex.mapMutations(["agregarCarrito"]),
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1;
     },
@@ -390,7 +396,6 @@ Vue.component("lista", {
     updateItemsPerPage(number) {
       this.itemsPerPage = number;
     },
-    ...Vuex.mapMutations(["aumentar"]),
   },
   template: `
   
@@ -405,7 +410,7 @@ Vue.component("lista", {
                                                 prepend-inner-icon="mdi-magnify" label="Search"></v-text-field>
                                             <template v-if="$vuetify.breakpoint.mdAndUp">
                                                 <v-spacer></v-spacer>
-                                                <v-select v-model="sortBy" flat solo-inverted hide-details :items="keys[0]"
+                                                <v-select v-model="sortBy" flat solo-inverted hide-details :items="keys"
                                                     prepend-inner-icon="mdi-magnify" label="Sort by"></v-select>
                                                 <v-spacer></v-spacer>
                                                 <v-btn-toggle v-model="sortDesc" mandatory>
@@ -447,7 +452,7 @@ Vue.component("lista", {
                                                             </v-list-item-content>
 
                                                         </v-list-item>
-                                                        <v-btn class="mx-2" fab dark small color="primary" @click="agregar(item.nombre, item.imagen, item.cantidad)">
+                                                        <v-btn class="mx-2" fab dark small color="primary" @click="agregar(item)">
       <!--AQUI BOTON-->                                     
                                                             <v-icon dark>
                                                                 mdi-cart
