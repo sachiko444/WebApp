@@ -1,12 +1,26 @@
 const store = new Vuex.Store({
   state: {
-    carrito: [],
+    carrito: JSON.parse(localStorage.getItem("carrito") || "[]"),
   },
   mutations: {
-    agregarCarrito(item) {
-      for (var i = 1; i <= this.carrito.length; i++) {
-        if (this.carrito[i] == item) {
-          this.carrito.splice(i, 1, item);
+    agregarCarrito(state, item) {
+      for (var i = 0; i < state.carrito.length; i++) {
+        if (state.carrito[i].name == item.name) {
+          item.cantidad = state.carrito[i].cantidad;
+          state.carrito.splice(i, 1, item);
+          localStorage.setItem("carrito", JSON.stringify(state.carrito));
+          return;
+        }
+      }
+      state.carrito.push(item);
+      localStorage.setItem("carrito", JSON.stringify(state.carrito));
+    },
+    quitarCarrito(state, item) {
+      for (var i = 0; i < state.carrito.length; i++) {
+        if (state.carrito[i].name == item.name) {
+          state.carrito.splice(i, 1);
+          localStorage.setItem("carrito", JSON.stringify(state.carrito));
+          return;
         }
       }
     },
@@ -24,7 +38,6 @@ Vue.component("carrito", {
       itemsPerPage: 4,
       sortBy: "name",
       keys: ["Nombre", "Imagen", "Descripcion", "Cantidad"],
-      items: [],
     };
   },
 
@@ -36,19 +49,13 @@ Vue.component("carrito", {
     filteredKeys() {
       return this.keys.filter((key) => key !== "Name");
     },
-    addtoItems() {
-      this.items = this.$store.state.carrito;
-    },
-    aumentar(item) {
-      item.cantidad++;
-    },
-    disminuir(item) {
-      item.cantidad--;
+    items() {
+      return this.$store.state.carrito;
     },
   },
 
   methods: {
-    ...Vuex.mapMutations(["agregarCarrito"]),
+    ...Vuex.mapMutations(["agregarCarrito", "quitarCarrito"]),
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1;
     },
@@ -57,6 +64,18 @@ Vue.component("carrito", {
     },
     updateItemsPerPage(number) {
       this.itemsPerPage = number;
+    },
+    aumentar(item) {
+      item.cantidad++;
+      this.agregarCarrito(item);
+    },
+    disminuir(item) {
+      item.cantidad--;
+      if (item.cantidad < 1) {
+        this.quitarCarrito(item);
+      } else {
+        this.agregarCarrito(item);
+      }
     },
   },
 
@@ -154,11 +173,11 @@ Vue.component("carrito", {
                                          
                                          
                       class="center"
-                      :class="{ 'blue--text': sortBy === key }"
+                      
                     >
 
-                      {{addtoItems()}}
-                      {{ item }}
+                     
+                     
                       
                       
                       
@@ -169,7 +188,7 @@ Vue.component("carrito", {
                 
                 <v-card-actions class="justify-center">
 
-                       <!--Comunicacion entre carrito y lista-->
+                
 
                     <v-btn
                       class="mx-2"
@@ -177,7 +196,7 @@ Vue.component("carrito", {
                       dark
                       small
                       color="primary"
-                      @click="disminuir(item)"                       <!--AQUI BOTON-->
+                      @click="disminuir(item)"                       
                       
                     >
                       <v-icon dark>
@@ -191,7 +210,7 @@ Vue.component("carrito", {
                       dark
                       small
                       color="primary"
-                      @click="aumentar(item)"                       <!--AQUI BOTON-->
+                      @click="aumentar(item)"                       
                       
                     >
                       <v-icon dark>
@@ -380,10 +399,6 @@ Vue.component("lista", {
       return this.keys.filter((key) => key !== "Name");
     },
     ...Vuex.mapState(["carrito"]),
-    agregar(item) {
-      item.cantidad = 1;
-      this.$store.commit("agregarCarrito", item);
-    },
   },
   methods: {
     ...Vuex.mapMutations(["agregarCarrito"]),
@@ -395,6 +410,13 @@ Vue.component("lista", {
     },
     updateItemsPerPage(number) {
       this.itemsPerPage = number;
+    },
+    agregar(item) {
+      if (item.cantidad <= 0) {
+        item.cantidad = 1;
+        this.agregarCarrito(item);
+      }
+      this.agregarCarrito(item);
     },
   },
   template: `
@@ -443,7 +465,7 @@ Vue.component("lista", {
                                                         <v-list-item>
                                                             </v-list-item-content>
                                                             <v-list-item-content class="center"
-                                                                :class="{ 'blue--text': sortBy === key }">
+                                                                >
                                                                 {{ item.descripcion }}
 
 
@@ -512,4 +534,6 @@ Vue.component("lista", {
 var vApp = new Vue({
   el: "#app",
   vuetify: new Vuetify(),
+  store: store,
+  methods: {},
 });
