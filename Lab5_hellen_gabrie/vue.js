@@ -37,7 +37,7 @@ Vue.component("carrito", {
       page: 1,
       itemsPerPage: 4,
       sortBy: "name",
-      keys: ["Nombre", "Imagen", "Descripcion", "Cantidad"],
+      keys: ["Name", "Imagen", "Descripcion", "Cantidad"],
     };
   },
 
@@ -95,7 +95,7 @@ Vue.component("carrito", {
         <template v-slot:header>
           <v-toolbar
             dark
-            color="#ff798a"
+            color="#8fe7fd"
             class="mb-1"
           >
             <v-text-field
@@ -307,7 +307,7 @@ Vue.component("lista", {
       page: 1,
       itemsPerPage: 4,
       sortBy: "name",
-      keys: ["Nombre", "Imagen", "Descripcion", "Cantidad"],
+      keys: ["Name", "Imagen", "Descripcion", "Cantidad"],
       items: [
         {
           name: "Cap'n Crunch",
